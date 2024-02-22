@@ -114,5 +114,65 @@ const employees = sequelize.define('employee',{
 
 sequelize.sync();
 
+app.get('/Product',(req, res) =>{
+    Products.findAll().then(Products => {
+        res.json(Products);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.get('/Product/:id',(req, res) =>{
+    Products.findByPk(req.params.id).then(Products => {
+        if (!Products){
+            res.status(404).send('Product not found');
+        } else{
+            res.json(Products);
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.post('/Product',(req, res) =>{
+    Products.create(req.body).then(Products => {
+        res.send(Products);
+    }).catch(err => {
+            res.status(500).send(err);
+        });
+    });
+
+app.put('/Product/:id',(req,res) => {
+    Products.findByPk(req.params.id).then(Products => {
+        if (!Products) {
+            res.status(404).send('Book not found');
+        } else {
+            Products.update(req.body).then(() =>{
+                res.send(Products);
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.delete('/Product/:id',(req,res) => {
+    Products.findByPk(req.params.id).then(Products => {
+        if (!Products){
+            res.status(404).send('Book not found');
+        } else {
+            Products.destroy().then(() => {
+                res.send({});
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}`));  
