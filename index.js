@@ -145,7 +145,7 @@ app.post('/Product',(req, res) =>{
 app.put('/Product/:id',(req,res) => {
     Products.findByPk(req.params.id).then(Products => {
         if (!Products) {
-            res.status(404).send('Book not found');
+            res.status(404).send('Products not found');
         } else {
             Products.update(req.body).then(() =>{
                 res.send(Products);
@@ -161,7 +161,7 @@ app.put('/Product/:id',(req,res) => {
 app.delete('/Product/:id',(req,res) => {
     Products.findByPk(req.params.id).then(Products => {
         if (!Products){
-            res.status(404).send('Book not found');
+            res.status(404).send('Products not found');
         } else {
             Products.destroy().then(() => {
                 res.send({});
@@ -173,6 +173,192 @@ app.delete('/Product/:id',(req,res) => {
         res.status(500).send(err);
     });
 });
+
+// -----------------------*users*--------------------------------------------------
+app.get('/users',(req, res) =>{
+    user.findAll().then(user => {
+        res.json(user);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.get('/users/:id',(req, res) =>{
+    user.findByPk(req.params.id).then(user => {
+        if (!user){
+            res.status(404).send('user not found');
+        } else{
+            res.json(user);
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.post('/users',(req, res) =>{
+    user.create(req.body).then(user => {
+        res.send(user);
+    }).catch(err => {
+            res.status(500).send(err);
+        });
+    });
+
+app.put('/users/:id',(req,res) => {
+    user.findByPk(req.params.id).then(user => {
+        if (!user) {
+            res.status(404).send('user not found');
+        } else {
+            user.update(req.body).then(() =>{
+                res.send(user);
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.delete('/users/:id',(req,res) => {
+    user.findByPk(req.params.id).then(user => {
+        if (!user){
+            res.status(404).send('user not found');
+        } else {
+            user.destroy().then(() => {
+                res.send({});
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+// -----------------------* order *--------------------------------------------------
+app.get('/order',(req, res) =>{
+    orders.findAll().then(orders => {
+        res.json(orders);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.get('/order/:id',(req, res) =>{
+    orders.findByPk(req.params.id).then(orders => {
+        if (!orders){
+            res.status(404).send('user not found');
+        } else{
+            res.json(user);
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.post('/order',(req, res) =>{
+    orders.create(req.body).then(orders => {
+        res.send(orders);
+    }).catch(err => {
+            res.status(500).send(err);
+        });
+    });
+
+app.put('/order/:id',(req,res) => {
+    orders.findByPk(req.params.id).then(orders => {
+        if (!user) {
+            res.status(404).send('orders not found');
+        } else {
+            orders.update(req.body).then(() =>{
+                res.send(orders);
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.delete('/order/:id',(req,res) => {
+    orders.findByPk(req.params.id).then(orders => {
+        if (!orders){
+            res.status(404).send('orders not found');
+        } else {
+            orders.destroy().then(() => {
+                res.send({});
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+// -----------------------* order *--------------------------------------------------
+app.get('/employee',(req, res) =>{
+    employees.findAll().then(employees => {
+        res.json(employees);
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.get('/employee/:id',(req, res) =>{
+    employees.findByPk(req.params.id).then(employees => {
+        if (!employees){
+            res.status(404).send('employees not found');
+        } else{
+            res.json(employees);
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.post('/employee',(req, res) =>{
+    employees.create(req.body).then(employees => {
+        res.send(employees);
+    }).catch(err => {
+            res.status(500).send(err);
+        });
+    });
+
+app.put('/employee/:id',(req,res) => {
+    employees.findByPk(req.params.id).then(employees => {
+        if (!user) {
+            res.status(404).send('employees not found');
+        } else {
+            employees.update(req.body).then(() =>{
+                res.send(employees);
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+app.delete('/employee/:id',(req,res) => {
+    employees.findByPk(req.params.id).then(employees => {
+        if (!employees){
+            res.status(404).send('employees not found');
+        } else {
+            employees.destroy().then(() => {
+                res.send({});
+            }).catch(err => {
+                res.status(500).send(err);
+            });
+        }
+    }).catch(err => {
+        res.status(500).send(err);
+    });
+});
+
+
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}`));  
