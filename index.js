@@ -7,7 +7,7 @@ app.use(express.json());
 const sequelize = new Sequelize('database','username','password',{
     host: 'localhost',
     dialect: 'sqlite',
-    storage: './Database/User.sqlite'
+    storage: './Database/Database.sqlite'
 });
 
 const Products = sequelize.define('Product', {
@@ -26,6 +26,10 @@ const Products = sequelize.define('Product', {
         allowNull: false
     },
     Name_product:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    img_product:{
         type: Sequelize.STRING,
         allowNull: false
     }
