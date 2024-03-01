@@ -114,7 +114,7 @@ const employees = sequelize.define('employee',{
 
 sequelize.sync();
 
-app.get('/Product',(req, res) =>{
+app.get('/Products',(req, res) =>{
     Products.findAll().then(Products => {
         res.json(Products);
     }).catch(err => {
@@ -122,7 +122,7 @@ app.get('/Product',(req, res) =>{
     });
 });
 
-app.get('/Product/:id',(req, res) =>{
+app.get('/Products/:id',(req, res) =>{
     Products.findByPk(req.params.id).then(Products => {
         if (!Products){
             res.status(404).send('Product not found');
@@ -134,7 +134,7 @@ app.get('/Product/:id',(req, res) =>{
     });
 });
 
-app.post('/Product',(req, res) =>{
+app.post('/Products',(req, res) =>{
     Products.create(req.body).then(Products => {
         res.send(Products);
     }).catch(err => {
@@ -142,7 +142,7 @@ app.post('/Product',(req, res) =>{
         });
     });
 
-app.put('/Product/:id',(req,res) => {
+app.put('/Products/:id',(req,res) => {
     Products.findByPk(req.params.id).then(Products => {
         if (!Products) {
             res.status(404).send('Products not found');
@@ -158,7 +158,7 @@ app.put('/Product/:id',(req,res) => {
     });
 });
 
-app.delete('/Product/:id',(req,res) => {
+app.delete('/Products/:id',(req,res) => {
     Products.findByPk(req.params.id).then(Products => {
         if (!Products){
             res.status(404).send('Products not found');
@@ -236,7 +236,7 @@ app.delete('/users/:id',(req,res) => {
 });
 
 // -----------------------* order *--------------------------------------------------
-app.get('/order',(req, res) =>{
+app.get('/orders',(req, res) =>{
     orders.findAll().then(orders => {
         res.json(orders);
     }).catch(err => {
@@ -244,7 +244,7 @@ app.get('/order',(req, res) =>{
     });
 });
 
-app.get('/order/:id',(req, res) =>{
+app.get('/orders/:id',(req, res) =>{
     orders.findByPk(req.params.id).then(orders => {
         if (!orders){
             res.status(404).send('user not found');
@@ -256,7 +256,7 @@ app.get('/order/:id',(req, res) =>{
     });
 });
 
-app.post('/order',(req, res) =>{
+app.post('/orders',(req, res) =>{
     orders.create(req.body).then(orders => {
         res.send(orders);
     }).catch(err => {
@@ -264,7 +264,7 @@ app.post('/order',(req, res) =>{
         });
     });
 
-app.put('/order/:id',(req,res) => {
+app.put('/orders/:id',(req,res) => {
     orders.findByPk(req.params.id).then(orders => {
         if (!user) {
             res.status(404).send('orders not found');
@@ -280,7 +280,7 @@ app.put('/order/:id',(req,res) => {
     });
 });
 
-app.delete('/order/:id',(req,res) => {
+app.delete('/orders/:id',(req,res) => {
     orders.findByPk(req.params.id).then(orders => {
         if (!orders){
             res.status(404).send('orders not found');
@@ -297,7 +297,7 @@ app.delete('/order/:id',(req,res) => {
 });
 
 // -----------------------* order *--------------------------------------------------
-app.get('/employee',(req, res) =>{
+app.get('/employees',(req, res) =>{
     employees.findAll().then(employees => {
         res.json(employees);
     }).catch(err => {
@@ -305,7 +305,7 @@ app.get('/employee',(req, res) =>{
     });
 });
 
-app.get('/employee/:id',(req, res) =>{
+app.get('/employees/:id',(req, res) =>{
     employees.findByPk(req.params.id).then(employees => {
         if (!employees){
             res.status(404).send('employees not found');
@@ -317,7 +317,7 @@ app.get('/employee/:id',(req, res) =>{
     });
 });
 
-app.post('/employee',(req, res) =>{
+app.post('/employees',(req, res) =>{
     employees.create(req.body).then(employees => {
         res.send(employees);
     }).catch(err => {
@@ -325,7 +325,7 @@ app.post('/employee',(req, res) =>{
         });
     });
 
-app.put('/employee/:id',(req,res) => {
+app.put('/employees/:id',(req,res) => {
     employees.findByPk(req.params.id).then(employees => {
         if (!user) {
             res.status(404).send('employees not found');
@@ -341,7 +341,7 @@ app.put('/employee/:id',(req,res) => {
     });
 });
 
-app.delete('/employee/:id',(req,res) => {
+app.delete('/employees/:id',(req,res) => {
     employees.findByPk(req.params.id).then(employees => {
         if (!employees){
             res.status(404).send('employees not found');
