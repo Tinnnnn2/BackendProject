@@ -38,6 +38,8 @@ img_product:{
 }
 });
 
+
+
 const Types = sequelize.define('Type', {
 Typeid:{
     type: Sequelize.INTEGER,
@@ -49,7 +51,6 @@ TypeName:{
     allowNull: false
 }
 });
-
 
 
 
@@ -79,6 +80,11 @@ phone:{
 userAdress:{
     type: Sequelize.STRING,
     allowNull: false
+},
+level:{
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: "user" 
 }
 });
 
@@ -101,41 +107,15 @@ userAdress:{
     type: Sequelize.STRING,
     allowNull: false
 },
-employeeld:{
-    type: Sequelize.INTEGER,
+status:{
+    type: Sequelize.BOOLEAN,
     allowNull: false
 }
 });
 
-user.hasMany(orders)
-orders.belongsTo(user)
+orders.belongsTo(user, { foreignKey: 'userid' });
+orders.belongsTo(Products, { foreignKey: 'Productid' });
 
-const employees = sequelize.define('employee',{
-employeeld:{
-    type: Sequelize.INTEGER,
-    allowNull: false
-},
-username:{
-    type: Sequelize.STRING,
-    allowNull: false
-},
-age:{
-    type: Sequelize.INTEGER,
-    allowNull: false
-},
-email:{
-    type: Sequelize.STRING,
-    allowNull: false
-},
-phone:{
-    type: Sequelize.STRING,
-    allowNull: false
-},
-adress:{
-    type: Sequelize.STRING,
-    allowNull: false
-}
-});
 
 
 sequelize.sync();
@@ -402,67 +382,55 @@ orders.findByPk(req.params.id).then(orders => {
 });
 });
 
-// -----------------------* order *--------------------------------------------------
-app.get('/employees',(req, res) =>{
-employees.findAll().then(employees => {
-    res.json(employees);
-}).catch(err => {
-    res.status(500).send(err);
-});
-});
 
-app.get('/employees/:id',(req, res) =>{
-employees.findByPk(req.params.id).then(employees => {
-    if (!employees){
-        res.status(404).send('employees not found');
-    } else{
-        res.json(employees);
-    }
-}).catch(err => {
-    res.status(500).send(err);
-});
-});
+orders.belongsTo(Products, { foreignKey: 'Productid' });
+Products.hasMany(orders, { foreignKey: 'Productid' });
+orders.belongsTo(user, { foreignKey: 'userid' });
+user.hasMany(orders, { foreignKey: 'userid' });
 
-app.post('/employees',(req, res) =>{
-employees.create(req.body).then(employees => {
-    res.send(employees);
-}).catch(err => {
-        res.status(500).send(err);
+
+app.get('/orders', (req, res) => {
+    orders.findAll({
+      include: [
+        {
+          model: user,
+          attributes: ['username', 'userAdress'] // ระบุฟิลด์ที่ต้องการ
+        },
+        {
+          model: Products,
+          attributes: ['Name_product', 'price'] // ระบุฟิลด์ที่ต้องการ
+        }
+      ]
+    })
+    .then(orders => {
+      res.json(orders);
+    })
+    .catch(err => {
+      res.status(500).send(err);
     });
-});
+  });
 
-app.put('/employees/:id',(req,res) => {
-employees.findByPk(req.params.id).then(employees => {
-    if (!user) {
-        res.status(404).send('employees not found');
-    } else {
-        employees.update(req.body).then(() =>{
-            res.send(employees);
-        }).catch(err => {
-            res.status(500).send(err);
-        });
-    }
-}).catch(err => {
-    res.status(500).send(err);
-});
-});
+// -----------------------*  *--------------------------------------------------
 
-app.delete('/employees/:id',(req,res) => {
-employees.findByPk(req.params.id).then(employees => {
-    if (!employees){
-        res.status(404).send('employees not found');
-    } else {
-        employees.destroy().then(() => {
-            res.send({});
-        }).catch(err => {
-            res.status(500).send(err);
-        });
-    }
-}).catch(err => {
-    res.status(500).send(err);
-});
-});
 
+app.post('/login',async(req, res) =>{
+    try {
+        const {name,password} = req.body
+        console.log(req.body)
+        const checkN = await user.findOne({where:{username:name}})
+        if(!checkN){
+            return res.json({message:"user not found"})
+        }
+        if(checkN.password != password){
+            return res.json({message:"wrong password"})
+        }
+        
+        return res.json({message: true,checkN})
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Server_error" });
+
+}});
 
 
 
