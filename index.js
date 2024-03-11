@@ -102,14 +102,6 @@ userid:{
 Productid:{
     type: Sequelize.INTEGER,
     allowNull: false
-},
-userAdress:{
-    type: Sequelize.STRING,
-    allowNull: false
-},
-status:{
-    type: Sequelize.BOOLEAN,
-    allowNull: false
 }
 });
 
@@ -179,6 +171,8 @@ Products.findByPk(req.params.id).then(Products => {
     res.status(500).send(err);
 });
 });
+
+//--------------------------------------------------------------------
 
 app.get('/Types',(req, res) =>{
     Types.findAll().then(Types => {
@@ -342,13 +336,24 @@ orders.findByPk(req.params.id).then(orders => {
 });
 });
 
-app.post('/orders',(req, res) =>{
-orders.create(req.body).then(orders => {
-    res.send(orders);
-}).catch(err => {
-        res.status(500).send(err);
-    });
-});
+
+
+app.post('/orders/:id', async (req, res) => {
+    try {
+        const sale = await orders.create({
+            Productid: req.body.Productid,
+            userid: req.body.userid
+        });
+
+        res.send(sale);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+}); 
+
+
+
 
 app.put('/orders/:id',(req,res) => {
 orders.findByPk(req.params.id).then(orders => {
@@ -389,26 +394,6 @@ orders.belongsTo(user, { foreignKey: 'userid' });
 user.hasMany(orders, { foreignKey: 'userid' });
 
 
-app.get('/orders', (req, res) => {
-    orders.findAll({
-      include: [
-        {
-          model: user,
-          attributes: ['username', 'userAdress'] // ระบุฟิลด์ที่ต้องการ
-        },
-        {
-          model: Products,
-          attributes: ['Name_product', 'price'] // ระบุฟิลด์ที่ต้องการ
-        }
-      ]
-    })
-    .then(orders => {
-      res.json(orders);
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    });
-  });
 
 // -----------------------*  *--------------------------------------------------
 
