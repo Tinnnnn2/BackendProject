@@ -304,6 +304,7 @@ user.findByPk(req.params.id).then(user => {
     if (!user){
         res.status(404).send('user not found');
     } else {
+        orders.destroy({where:{userid:req.params.id},})
         user.destroy().then(() => {
             res.send({});
         }).catch(err => {
